@@ -19,3 +19,16 @@ function printElement(element) {
     newDiv.style.display = "none";
     newDiv.parentNode.removeChild(newDiv);
 }
+
+function validateTextArea() {
+    var x = document.forms["note-body"]["textarea-note"].value;
+    if (x == "") {
+        Swal.fire({
+            title: 'Error!',
+            text: 'Write something first!',
+            icon: 'error',
+            })
+      return false;
+    }
+    return true;
+}

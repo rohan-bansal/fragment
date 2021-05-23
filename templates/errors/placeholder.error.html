@@ -1,9 +1,9 @@
 {% extends 'layouts/main.html' %}
-{% block title %}Fragment{% endblock %}
+{% block title %}Error | Fragment{% endblock %}
 {% block content %}
 
 <div class="pattern" id="pattern-div">
-  <div class="title-group-wrapper">
+  <div class="title-group-wrapper" style="margin-top: 10% !important;">
     <div class="title-group">
       <div class="fragment-icon" onclick="window.location.href='/'">
         <svg viewBox="204.776 175.709 99.239 99.523" xmlns="http://www.w3.org/2000/svg">
@@ -16,23 +16,12 @@
       <h1 class="text-title" onclick="window.location.href='/'">Fragment</h1>
     </div>
   </div>
-  <form name="note-body" data-ajax="false" method="POST" onsubmit="return validateTextArea();" id="note-body">
-    <div class="textfield-body-wrapper" id="textfield-body-wrapper">
-      <div class="textfield-body">
-        <textarea name="textarea-note" class="textfield-content" placeholder="Write something!" id="textarea-note"></textarea>
-      </div>
-    </div>
-    <div class="button-group">
-        <button class="action-button" type="submit" formaction="/"><i class="fa fa-link" style="margin-right: 10px;"></i>Link</button>
-        <button class="action-button" type="button" onclick="printElement('textarea-note');"><i class="fa fa-print" style="margin-right: 10px;"></i>Print</button>
-    </div>
-  </form>
+  <h2 class="error-text">Something went wrong.</h2>
 
   <div class="credits">
     <h3 class="me">Built with <i class="fa fa-heart" style="margin-right: 5px; margin-left: 5px; color: #FE6968;"></i> by <a target="_blank" href="https://rbansal.dev">Rohan Bansal</a></h3>
   </div>
 
-  <p style="display: none;" id="temp"></p>
 </div>
 
 {% endblock %}

@@ -86,7 +86,7 @@ def link(code):
         abort(404)
     print(text)
     #TODO replace below line
-    return render_template('pages/placeholder.home.html')
+    return render_template('pages/placeholder.view.html', renderText=text)
 
 @app.route("/error", methods=['POST', 'GET'])
 def error():

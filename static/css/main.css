@@ -1,0 +1,24 @@
+
+a {
+  cursor: pointer;
+}
+::selection {
+  background: #555;
+  color: #FFF;
+}
+::-moz-selection {
+  background: #555;
+  color: #FFF;
+}
+::-webkit-selection {
+  background: #555;
+  color: #FFF;
+}
+
+.pattern {
+  border: 4px solid #3A83F6;
+  background-image: url("../img/hero_image.svg");
+  height: 100vh;
+  width: 100vw;
+  background-color: #111827;
+}

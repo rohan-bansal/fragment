@@ -2,7 +2,7 @@
 {% block title %}Fragment{% endblock %}
 {% block content %}
 
-<div class="pattern">
+<div class="pattern" id="pattern-div">
   <div class="title-group-wrapper">
     <div class="title-group">
       <div class="fragment-icon">
@@ -16,11 +16,23 @@
       <h1 class="text-title">Fragment</h1>
     </div>
   </div>
-  <div class="textfield-body-wrapper">
-    <div class="textfield-body">
-      
+  <form data-ajax="false" method="POST" id="note-body">
+    <div class="textfield-body-wrapper" id="textfield-body-wrapper">
+      <div class="textfield-body">
+        <textarea class="textfield-content" placeholder="Write something!" id="textarea-note"></textarea>
+      </div>
     </div>
-  </div>  
+    <div class="button-group">
+        <button class="action-button" type="submit" formaction="/"><i class="fa fa-link" style="margin-right: 10px;"></i>Link</button>
+        <button class="action-button" type="button" onclick="printElement('textarea-note');"><i class="fa fa-print" style="margin-right: 10px;"></i>Print</button>
+    </div>
+  </form>
+
+  <div class="credits">
+    <h3 class="me">Built with <i class="fa fa-heart" style="margin-right: 5px; margin-left: 5px; color: #FE6968;"></i> by <a target="_blank" href="https://rbansal.dev">Rohan Bansal</a></h3>
+  </div>
+
+  <p style="display: none;" id="temp"></p>
 </div>
 
 {% endblock %}

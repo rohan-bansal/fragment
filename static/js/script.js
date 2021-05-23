@@ -2,23 +2,24 @@
 
 }).call(this);
 
-function printElement(element) {
-    var elem = document.getElementById(element);
+// function printElement(element) {
+//     var elem = document.getElementById(element);
 
-    const newDiv = document.createElement("div");
-    const newContent = document.createTextNode(elem.value);
+//     const newDiv = document.createElement("div");
+//     const newContent = document.createTextNode(elem.value);
 
-    newDiv.appendChild(newContent);
+//     newDiv.appendChild(newContent);
 
-    // newDiv.style.display = "none";
-    newDiv.id = "temp-text";
-    document.getElementById('pattern-div').insertBefore(newDiv, document.getElementById('temp'))
+//     // newDiv.style.display = "none";
+//     newDiv.id = "temp-text";
+//     document.getElementById('pattern-div').insertBefore(newDiv, document.getElementById('temp'))
 
-    printJS('temp-text', 'html')
+//     printJS('temp-text', 'html')
 
-    newDiv.style.display = "none";
-    newDiv.parentNode.removeChild(newDiv);
-}
+//     newDiv.style.display = "none";
+//     newDiv.parentNode.removeChild(newDiv);
+// }
+
 
 function validateTextArea() {
     var x = document.forms["note-body"]["textarea-note"].value;
@@ -31,4 +32,33 @@ function validateTextArea() {
       return false;
     }
     return true;
+}
+
+window.addEventListener('load', (event) => createModal());
+
+function createModal() {
+
+    el = document.getElementById("selector")
+    if(el.className == "trigger-True") {
+        hash = document.getElementById('hashspan').innerHTML;
+        document.getElementById('hashspan').textContent = window.location.hostname + "/" + hash;
+        document.getElementById('hasha').href = window.location.hostname + "/" + hash;
+        var modal = new tingle.modal({
+            footer: true,
+            stickyFooter: false,
+            closeMethods: ['overlay', 'escape'],
+            closeLabel: "Close",
+            onClose: () => {
+                modal.destroy();
+            }
+        });
+    
+        var stuff = $("#modal-link").html();
+        modal.setContent(stuff);
+        modal.addFooterBtn('Awesome!', 'tingle-btn tingle-btn--primary', function() {
+            modal.close();
+        });
+    
+        modal.open();
+    }
 }

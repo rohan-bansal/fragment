@@ -163,3 +163,42 @@ textarea {
   font-size: 22px;
   text-align: center;
 }
+
+.highlight-physical {
+  color: #3b80ff;
+  border-bottom: 2px black dashed;
+}
+
+.tingle-enabled .tingle-content-wrapper {
+  filter: blur(2px) !important;
+}
+
+.tingle-modal-box__footer {
+  text-align: center;
+}
+
+.tingle-btn {
+  border-radius: 8px;
+  background-color: #FE6968 !important;
+}
+
+h5 a {
+  border-bottom: 2px#555 dashed;
+  /* background-color: #ffecec; */
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 3px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+h5 a:hover {
+  text-decoration: none;
+
+}
+
+.tingle-modal-box {
+  width: auto !important;
+}

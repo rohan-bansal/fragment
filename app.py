@@ -4,6 +4,9 @@ from logging import Formatter, FileHandler
 import hashlib
 import requests
 import os
+import markdown
+import markdown.extensions.fenced_code
+from markupsafe import Markup
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -84,9 +87,11 @@ def link(code):
     status, text = getTextByRecordHash(code)
     if status == -1:
         abort(404)
-    print(text)
-    #TODO replace below line
-    return render_template('pages/placeholder.view.html', renderText=text)
+    
+    md_template_string = markdown.markdown(text, extensions=['fenced_code'])
+    marked_up = Markup(md_template_string)
+    
+    return render_template('pages/placeholder.view.html', renderText=marked_up)
 
 @app.route("/error", methods=['POST', 'GET'])
 def error():
@@ -96,7 +101,7 @@ def error():
 @app.route('/', methods=["POST", "GET"])
 def home():
     if request.method == 'GET':
-        return render_template('pages/placeholder.home.html')
+        return render_template('pages/placeholder.home.html', trigger_modal=False)
     elif request.method == 'POST':
         text = request.form['textarea-note']
         
@@ -104,7 +109,7 @@ def home():
         code = uploadText(hashed, text)
 
         if code == 200:
-            return render_template('pages/placeholder.home.html')
+            return render_template('pages/placeholder.home.html', trigger_modal=True, hash_=hashed)
         else:
             return redirect(url_for('error'))
 

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, redirect, abort
 import logging
 from logging import Formatter, FileHandler
 import hashlib
@@ -13,7 +13,6 @@ def uploadText(hash_, text):
     listUrl = "https://api.airtable.com/v0/appL5PANPfvJ59eji/Links?maxRecords=3&view=Grid%20view&fields%5B%5D=hash&maxRecords=100"
     headers = {
         "Authorization" : "Bearer " + app.config['AIRTABLE_KEY'],
-        # "Content-Type" : "application/json"
     }
     
     createdHashes = []
@@ -25,8 +24,6 @@ def uploadText(hash_, text):
         else:
             y = requests.get(listUrl, headers=headers, json={"offset":offset})
 
-        print(y.json())
-
         for element in y.json()['records']:
             createdHashes.append(element['fields']['hash'])
 
@@ -34,8 +31,6 @@ def uploadText(hash_, text):
             offset = y.json()['offset']
         else:
             break
-
-    print(createdHashes, hash_)
 
     if hash_ not in createdHashes:
         url = "https://api.airtable.com/v0/appL5PANPfvJ59eji/Links"
@@ -56,6 +51,47 @@ def uploadText(hash_, text):
     else:
         return 200
 
+def getTextByRecordHash(hash_):
+    listUrl = "https://api.airtable.com/v0/appL5PANPfvJ59eji/Links?maxRecords=3&view=Grid%20view&maxRecords=100"
+    headers = {
+        "Authorization" : "Bearer " + app.config['AIRTABLE_KEY'],
+    }
+    
+    hashAndText = {}
+    offset = ""
+
+    while True:
+        if offset == "":
+            y = requests.get(listUrl, headers=headers)
+        else:
+            y = requests.get(listUrl, headers=headers, json={"offset":offset})
+
+        for element in y.json()['records']:
+            hashAndText[element['fields']['hash']] = element['fields']['text']
+
+        if "offset" in y.json():
+            offset = y.json()['offset']
+        else:
+            break
+    
+    if hash_ not in hashAndText:
+        return -1, "None"
+    else:
+        return 1, hashAndText[hash_]
+
+@app.route("/<code>")
+def link(code):
+    status, text = getTextByRecordHash(code)
+    if status == -1:
+        abort(404)
+    print(text)
+    #TODO replace below line
+    return render_template('pages/placeholder.home.html')
+
+@app.route("/error", methods=['POST', 'GET'])
+def error():
+    return render_template('errors/placeholder.error.html', error_text="Something went wrong. Try again!")
+
 
 @app.route('/', methods=["POST", "GET"])
 def home():
@@ -70,21 +106,16 @@ def home():
         if code == 200:
             return render_template('pages/placeholder.home.html')
         else:
-            return url_for('error')
-
-@app.route('/error')
-def error():
-    return render_template('errors/placeholder.error.html')
-
+            return redirect(url_for('error'))
 
 @app.errorhandler(500)
 def internal_error(error):
-    return render_template('errors/500.html'), 500
+    render_template('errors/placeholder.error.html', error_text="Code 500.")
 
 
 @app.errorhandler(404)
 def not_found_error(error):
-    return render_template('errors/404.html'), 404
+    return render_template('errors/placeholder.error.html', error_text="Invalid URL (404).")
 
 if not app.debug:
     file_handler = FileHandler('error.log')

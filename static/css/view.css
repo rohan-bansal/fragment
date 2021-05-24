@@ -138,6 +138,11 @@ header {
   }
 }
 
+@media (max-width: 1024px) {
+  .credits {
+    display: none;
+  }
+}
 
 /* Extracted Bootstrap styles (minified) */
 code,kbd,pre,samp {font-family: monospace,monospace;font-size:1em;}

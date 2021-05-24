@@ -109,7 +109,7 @@ def home():
         code = uploadText(hashed, text)
 
         if code == 200:
-            return render_template('pages/placeholder.home.html', trigger_modal=True, hash_=hashed)
+            return render_template('pages/placeholder.home.html', trigger_modal=True, hash_=hashed, original_text=text.strip())
         else:
             return redirect(url_for('error'))
 
@@ -134,6 +134,7 @@ if not app.debug:
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    port = app.config['PORT']
+    host = app.config['HOST']
+    app.run(host=host, port=port)
 

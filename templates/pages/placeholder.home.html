@@ -19,7 +19,7 @@
   <form name="note-body" data-ajax="false" method="POST" onsubmit="return validateTextArea();" id="note-body">
     <div class="textfield-body-wrapper" id="textfield-body-wrapper">
       <div class="textfield-body">
-        <textarea name="textarea-note" class="textfield-content" placeholder="Write something! (markdown enabled)" id="textarea-note"></textarea>
+        <textarea name="textarea-note" class="textfield-content" placeholder="Write something! (markdown enabled)" id="textarea-note">{% if trigger_modal == True %}{{ original_text }}{% endif %}</textarea>
       </div>
     </div>
     <div class="button-group">

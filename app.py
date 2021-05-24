@@ -8,6 +8,7 @@ import markdown
 import markdown.extensions.fenced_code
 from markupsafe import Markup
 
+
 app = Flask(__name__)
 app.config.from_object('config')
 
@@ -88,7 +89,7 @@ def link(code):
     if status == -1:
         abort(404)
     
-    md_template_string = markdown.markdown(text, extensions=['fenced_code'])
+    md_template_string = markdown.markdown(text, extensions=['fenced_code', 'codehilite'])
     marked_up = Markup(md_template_string)
     
     return render_template('pages/placeholder.view.html', renderText=marked_up)

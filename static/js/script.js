@@ -49,7 +49,8 @@ function createModal() {
     if(el.className == "trigger-True") {
         hash = document.getElementById('hashspan').innerHTML;
         document.getElementById('hashspan').textContent = window.location.hostname + "/" + hash;
-        document.getElementById('hasha').href = window.location.hostname + "/" + hash;
+        console.log(window.location.hostname, hash)
+        document.getElementById('hasha').href = "https://" + window.location.hostname + "/" + hash;
         var modal = new tingle.modal({
             footer: true,
             stickyFooter: false,

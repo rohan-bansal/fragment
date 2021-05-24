@@ -34,7 +34,10 @@ function validateTextArea() {
     return true;
 }
 
-window.addEventListener('load', (event) => createModal());
+window.addEventListener('load', (event) => {
+    createModal();
+});
+
 
 function createModal() {
 

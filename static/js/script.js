@@ -38,6 +38,33 @@ window.addEventListener('load', (event) => {
     createModal();
 });
 
+function preview() {
+
+    var converter = new showdown.Converter();
+    var md = document.getElementById('textarea-note').value;
+    var html = converter.makeHtml(md);
+
+    document.getElementById('link-set').innerHTML = html;
+
+    var modal = new tingle.modal({
+        footer: true,
+        stickyFooter: false,
+        closeMethods: ['overlay', 'escape'],
+        closeLabel: "Close",
+        onClose: () => {
+            modal.destroy();
+        }
+    });
+
+    var stuff = $("#preview-link").html();
+    modal.setContent(stuff);
+    modal.addFooterBtn('Done', 'tingle-btn tingle-btn--primary', function() {
+        modal.close();
+    });
+
+    modal.open();
+}
+
 
 function createModal() {
 

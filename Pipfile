@@ -11,6 +11,7 @@ flask = "*"
 requests = "*"
 markdown = "*"
 markupsafe = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.8"

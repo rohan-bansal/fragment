@@ -7,11 +7,16 @@ function setBackground() {
     const background = $('#pattern-bottom').height();
 
     const screenSection = document.documentElement.clientHeight * 0.25;
+    const screenHalf = document.documentElement.clientHeight * 0.50;
     let boxHeight = (textbox - screenSection) + 200;
 
-    $('#pattern-bottom').height(boxHeight + "px");
-    // document.getElementById('pattern-bottom')
+    const bounding = document.querySelector('#displaybox-id').getBoundingClientRect();
+    if (bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)) {
+        boxHeight = screenHalf;
+    }
 
-    // console.log($('pattern-bottom').height());  
+
+    $('#pattern-bottom').height(boxHeight + "px");
+
 
 }

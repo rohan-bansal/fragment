@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, abort
+from flask import Flask, render_template, request, url_for, redirect, abort, send_from_directory
 import logging
 from logging import Formatter, FileHandler
 import hashlib
@@ -9,7 +9,7 @@ import markdown.extensions.fenced_code
 from markupsafe import Markup
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 app.config.from_object('config')
 
 def uploadText(hash_, text):
@@ -97,6 +97,12 @@ def link(code):
 @app.route("/error", methods=['POST', 'GET'])
 def error():
     return render_template('errors/placeholder.error.html', error_text="Something went wrong. Try again!")
+
+
+@app.route('/robots.txt')
+@app.route('/sitemap.xml')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
 
 
 @app.route('/', methods=["POST", "GET"])

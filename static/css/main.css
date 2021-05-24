@@ -3,6 +3,13 @@
 
 html {
   overflow-x: hidden;
+  height: 100%;
+}
+
+body {
+  margin: 0 !important;
+  height: 100vh;
+  width: 100vw;
 }
 
 a {
@@ -15,6 +22,9 @@ a {
   height: 100vh;
   width: 100vw;
   background-color: #111827;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;  
 }
 
 .title-group-wrapper {
@@ -43,13 +53,14 @@ a {
 .text-title {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
-  font-size: 60px !important;
+  font-size: 60px;
   color: white;
   cursor: pointer;
+  margin: auto;
 }
 
 .textfield-body-wrapper {
-  margin-top: 4%;
+  margin-top: 3%;
   text-align: center;
 }
 
@@ -119,7 +130,7 @@ textarea {
 }
 
 .credits {
-  position: fixed;
+  position: absolute;
   bottom: 10px;
   right: 25px;
 }
@@ -133,6 +144,7 @@ textarea {
 
 .me a {
   text-decoration: none;
+  color: #3d88ff;
 }
 
 .me a:hover {
@@ -201,4 +213,42 @@ h5 a:hover {
 
 .tingle-modal-box {
   width: auto !important;
+}
+
+@media (max-width: 767px) {
+  .text-title {
+    font-size: 40;
+  }
+
+  .fragment-icon {
+    min-height: 60px;
+    min-width: 60px;
+    max-height: 60px;
+    max-width: 60px;
+    margin-right: 10px;
+  }
+
+  .title-group-wrapper {
+    margin-top: 6%;
+  }
+
+  .textfield-body-wrapper {
+    margin-top: 8%;
+  }
+
+  .credits {
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+
+  .button-group {
+    margin-top: 8%;
+  }
+
+  .action-button {
+    font-size: 15px;
+    text-align: center;
+  }
 }

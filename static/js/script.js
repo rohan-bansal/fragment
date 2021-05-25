@@ -1,3 +1,5 @@
+var explodeModal = "";
+
 function validateTextArea() {
     var x = document.forms["note-body"]["textarea-note"].value;
     if (x == "") {
@@ -44,25 +46,59 @@ function preview() {
 
 function explode() {
 
-    var modal = new tingle.modal({
+    explodeModal = new tingle.modal({
         footer: true,
         stickyFooter: false,
         closeMethods: ['overlay', 'escape'],
         closeLabel: "Close",
         onClose: () => {
-            modal.destroy();
+            explodeModal.destroy();
         }
     });
 
     var stuff = $("#explode-link").html();
-    modal.setContent(stuff);
-    modal.addFooterBtn('Done', 'tingle-btn tingle-btn--default', function() {
-        modal.close();
-    });
+    explodeModal.setContent(stuff);
 
-    modal.open();
+
+    explodeModal.open();
 }
 
+$(document).on("submit", "#explosion", (e) => {
+    if(!$('input[name="eType"]:checked').val()) {
+        
+    } else {
+        const element = $('input[name="eType"]:checked').parent().find("input").eq(1);
+
+        if(element.hasClass('custom-input')) {
+            if(element.val() <= 0) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Invalid field: Cannot be null, negative, or zero.',
+                    icon: 'error',
+                });
+                return;
+            } else {
+                document.getElementById('does-it-explode').value = $('input[name="eType"]:checked').val();
+                document.getElementById('does-it-explode-input').value = element.val();
+                document.getElementById('explode-enabled').style.display = "block";
+            }
+        } else {
+            document.getElementById('does-it-explode').value = $('input[name="eType"]:checked').val();
+            document.getElementById('explode-enabled').style.display = "block";
+        }
+    }
+
+    e.preventDefault();
+    explodeModal.close();
+   
+});
+
+function disableExplode() {
+    document.getElementById('does-it-explode').value = "none";
+    document.getElementById('does-it-explode-input').value = "none";
+    document.getElementById('explode-enabled').style.display = "none";
+}
 
 function createModal() {
 

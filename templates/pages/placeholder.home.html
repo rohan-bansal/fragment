@@ -22,11 +22,14 @@
         <textarea name="textarea-note" class="textfield-content betterbar" placeholder="Write something! (markdown enabled)" id="textarea-note">{% if trigger_modal == True %}{{ original_text }}{% endif %}</textarea>
       </div>
     </div>
+    <input name='does-it-explode' id="does-it-explode" type="hidden" value="none"/>
+    <input name='does-it-explode-input' id="does-it-explode-input" type="hidden" value="none"/>
     <div class="button-group">
         <button class="action-button" type="submit" formaction="/"><i class="fas fa-link" style="margin-right: 10px;"></i>Link</button>
         <button class="action-button" type="button" onclick="preview();"><i class="fas fa-external-link-alt" style="margin-right: 10px;"></i>Preview</button>
         <button class="action-button" type="button" onclick="explode();"><i class="fas fa-bomb" style="margin-right: 10px;"></i>Explode</button>
     </div>
+    <h2 id="explode-enabled" style="text-align: center; font-family: 'Inter', sans-serif; color: white; font-weight: 700; font-size: 20px; margin-top: 1%; display: none;"><i class="fas fa-bomb" style="margin-right: 10px;"></i>Explode is enabled. <a style="color: #3d88ff;" onclick="disableExplode();">Click to disable.</a></h2>
   </form>
 
   <div class="credits">
@@ -45,27 +48,38 @@
 
   <div id="explode-link" style="display: none">
     <h1 style="text-align: center; font-family: 'Inter', sans-serif !important; font-weight: 700;"><i class="fas fa-bomb" style="margin-right: 10px; color: #3d88ff;"></i>Explode</h1>
-    <h3 style="text-align: center; font-family: 'Inter', sans-serif !important; font-weight: 400;">Send a self-destructing message.</h3>
-    <label class="rad-label">
-      <input type="radio" class="rad-input" name="type">
-      <div class="rad-design"></div>
-      <div class="rad-text">After first view</div>
-    </label>
-    <label class="rad-label">
-      <input type="radio" class="rad-input" name="type">
-      <div class="rad-design"></div>
-      <div class="rad-text">After <input name="views-input" class="custom-input" type="number"/> views</div>
-    </label>
-    <label class="rad-label">
-      <input type="radio" class="rad-input" name="type">
-      <div class="rad-design"></div>
-      <div class="rad-text">30 seconds after first open</div>
-    </label>
-    <label class="rad-label">
-      <input type="radio" class="rad-input" name="type">
-      <div class="rad-design"></div>
-      <div class="rad-text"><input name="seconds-input" class="custom-input" type="number"/> seconds after first open</div>
-    </label>
+    <h3 style="text-align: center; font-family: 'Inter', sans-serif !important; font-weight: 400; margin-bottom: 30px;">Send a self-destructing message.</h3>
+    <form id="explosion">
+      <label class="rad-label">
+        <input type="radio" value="firstview" class="rad-input" name="eType">
+        <div class="rad-design"></div>
+        <div class="rad-text">After first view</div>
+      </label>
+      <label class="rad-label">
+        <input type="radio" value="30sec" class="rad-input" name="eType">
+        <div class="rad-design"></div>
+        <div class="rad-text">30 seconds after first open</div>
+      </label>
+      <label class="rad-label">
+        <input type="radio" value="xviews" class="rad-input" name="eType">
+        <div class="rad-design"></div>
+        <div class="rad-text">After <input name="xviews" class="custom-input" type="number"/> views</div>
+      </label>
+
+      <label class="rad-label">
+        <input type="radio" value="xsec" class="rad-input" name="eType">
+        <div class="rad-design"></div>
+        <div class="rad-text"><input name="xsec" class="custom-input" type="number"/> seconds after first open</div>
+      </label>
+      <label class="rad-label">
+        <input type="radio" value="xhour" class="rad-input" name="eType">
+        <div class="rad-design"></div>
+        <div class="rad-text">In <input name="xhour" class="custom-input" type="number"/> hours</div>
+      </label>
+      <div style="width: 100%; text-align: center;">
+        <button type="submit" id="explode-done" class="tingle-btn tingle-btn--default" style="text-align: center; margin-top: 30px;" >Done</button>
+      </div>
+    </form>
   </div>
 
   <div id="modal-link" style="display: none">

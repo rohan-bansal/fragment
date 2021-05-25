@@ -111,7 +111,11 @@ def home():
         return render_template('pages/placeholder.home.html', trigger_modal=False)
     elif request.method == 'POST':
         text = request.form['textarea-note']
+        explode = request.form['does-it-explode']
+        explode_input = request.form['does-it-explode-input']
         
+        print(explode, explode_input)
+
         hashed = hashlib.md5(text.encode()).hexdigest()[:10]
         code = uploadText(hashed, text)
 

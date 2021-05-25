@@ -350,3 +350,7 @@ h5 a:hover {
     text-align: center;
   }
 }
+
+.tingle-modal-box__footer:empty {
+  display: none !important;
+}

@@ -39,13 +39,33 @@
     <h1 style="text-align: center; font-family: 'Inter', sans-serif !important; font-weight: 700;">Preview</h1>
     <div class="textfield-body-wrapper" id="modal-textfield-wrapper">
       <div class="textfield-body betterbar" id='link-set' style="text-align: left; padding: 30px; overflow-y: scroll; background-color: white;">
-        <!-- <textarea name="modal-textarea-note" class="textfield-content" placeholder="Write something! (markdown enabled)" id="modal-textarea-note"></textarea> -->
       </div>
     </div>
   </div>
 
   <div id="explode-link" style="display: none">
-    <h1 style="text-align: center; font-family: 'Inter', sans-serif !important; font-weight: 700;"><i class="fas fa-bomb" style="margin-right: 10px;"></i>Explode</h1>
+    <h1 style="text-align: center; font-family: 'Inter', sans-serif !important; font-weight: 700;"><i class="fas fa-bomb" style="margin-right: 10px; color: #3d88ff;"></i>Explode</h1>
+    <h3 style="text-align: center; font-family: 'Inter', sans-serif !important; font-weight: 400;">Send a self-destructing message.</h3>
+    <label class="rad-label">
+      <input type="radio" class="rad-input" name="type">
+      <div class="rad-design"></div>
+      <div class="rad-text">After first view</div>
+    </label>
+    <label class="rad-label">
+      <input type="radio" class="rad-input" name="type">
+      <div class="rad-design"></div>
+      <div class="rad-text">After <input name="views-input" class="custom-input" type="number"/> views</div>
+    </label>
+    <label class="rad-label">
+      <input type="radio" class="rad-input" name="type">
+      <div class="rad-design"></div>
+      <div class="rad-text">30 seconds after first open</div>
+    </label>
+    <label class="rad-label">
+      <input type="radio" class="rad-input" name="type">
+      <div class="rad-design"></div>
+      <div class="rad-text"><input name="seconds-input" class="custom-input" type="number"/> seconds after first open</div>
+    </label>
   </div>
 
   <div id="modal-link" style="display: none">
@@ -63,7 +83,6 @@
   
     <br>
     <h5 style="text-align: center; font-family: 'Inter', sans-serif;"><a id="hasha" target="_blank" href=""><i class="fas fa-external-link-alt" style="margin-right: 10px;"></i><span id="hashspan">{{ hash_ }}</span></a></h5>
-    <!-- <h4 style="text-align: center; font-family: 'Inter', sans-serif !important;  line-height: 2.2;"><span class="highlight-physical" id="hashspan"></span><br></h4> -->
     <br>
   </div>
 </div>

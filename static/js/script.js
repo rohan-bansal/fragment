@@ -56,7 +56,7 @@ function explode() {
 
     var stuff = $("#explode-link").html();
     modal.setContent(stuff);
-    modal.addFooterBtn('Done', 'tingle-btn tingle-btn--primary', function() {
+    modal.addFooterBtn('Done', 'tingle-btn tingle-btn--default', function() {
         modal.close();
     });
 

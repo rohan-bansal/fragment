@@ -176,9 +176,16 @@ textarea {
   text-align: center;
 }
 
-.highlight-physical {
+#hasha {
   color: #3b80ff;
   border-bottom: 2px black dashed;
+  text-decoration: none;
+}
+
+#hasha:hover {
+  text-decoration: none;
+  color: #5791fc;
+  
 }
 
 .tingle-enabled .tingle-content-wrapper {
@@ -192,6 +199,8 @@ textarea {
 .tingle-btn {
   border-radius: 8px;
   background-color: #FE6968 !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700;
 }
 
 h5 a {
@@ -213,6 +222,10 @@ h5 a:hover {
 
 .tingle-modal-box {
   width: auto !important;
+}
+
+.swal2-container {
+  font-family: 'Inter', sans-serif !important;
 }
 
 @media (max-width: 767px) {

@@ -42,6 +42,27 @@ function preview() {
     modal.open();
 }
 
+function explode() {
+
+    var modal = new tingle.modal({
+        footer: true,
+        stickyFooter: false,
+        closeMethods: ['overlay', 'escape'],
+        closeLabel: "Close",
+        onClose: () => {
+            modal.destroy();
+        }
+    });
+
+    var stuff = $("#explode-link").html();
+    modal.setContent(stuff);
+    modal.addFooterBtn('Done', 'tingle-btn tingle-btn--primary', function() {
+        modal.close();
+    });
+
+    modal.open();
+}
+
 
 function createModal() {
 

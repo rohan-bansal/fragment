@@ -23,9 +23,9 @@
       </div>
     </div>
     <div class="button-group">
-        <button class="action-button" type="submit" formaction="/"><i class="fa fa-link" style="margin-right: 10px;"></i>Link</button>
-        <button class="action-button" type="button" onclick="preview()"><i class="fa fa-external-link" style="margin-right: 10px;"></i>Preview</button>
-        <button class="action-button" type="button" onclick=""><i class="fa fa-bomb" style="margin-right: 10px;"></i>Explode</button>
+        <button class="action-button" type="submit" formaction="/"><i class="fas fa-link" style="margin-right: 10px;"></i>Link</button>
+        <button class="action-button" type="button" onclick="preview();"><i class="fas fa-external-link-alt" style="margin-right: 10px;"></i>Preview</button>
+        <button class="action-button" type="button" onclick="explode();"><i class="fas fa-bomb" style="margin-right: 10px;"></i>Explode</button>
     </div>
   </form>
 
@@ -44,6 +44,10 @@
     </div>
   </div>
 
+  <div id="explode-link" style="display: none">
+    <h1 style="text-align: center; font-family: 'Inter', sans-serif !important; font-weight: 700;"><i class="fas fa-bomb" style="margin-right: 10px;"></i>Explode</h1>
+  </div>
+
   <div id="modal-link" style="display: none">
     <div style="display: flex; align-items: center; justify-content: center;">
       <div style="max-width: 50px; max-height: 50px; min-height: 50px; min-width: 50px; margin-right: 15px;">
@@ -58,7 +62,7 @@
     </div>
   
     <br>
-    <h5 style="text-align: center; font-family: 'Inter', sans-serif;"><a id="hasha" target="_blank" href=""><i class="fa fa-external-link" style="margin-right: 10px;"></i><span id="hashspan">{{ hash_ }}</span></a></h5>
+    <h5 style="text-align: center; font-family: 'Inter', sans-serif;"><a id="hasha" target="_blank" href=""><i class="fas fa-external-link-alt" style="margin-right: 10px;"></i><span id="hashspan">{{ hash_ }}</span></a></h5>
     <!-- <h4 style="text-align: center; font-family: 'Inter', sans-serif !important;  line-height: 2.2;"><span class="highlight-physical" id="hashspan"></span><br></h4> -->
     <br>
   </div>

@@ -12,7 +12,8 @@ from markupsafe import Markup
 app = Flask(__name__, static_folder='static')
 app.config.from_object('config')
 
-def uploadText(hash_, text):
+
+def uploadText(hash_, text, explode, explode_input):
 
     listUrl = "https://api.airtable.com/v0/appL5PANPfvJ59eji/Links?maxRecords=3&view=Grid%20view&fields%5B%5D=hash&maxRecords=100"
     headers = {
@@ -20,6 +21,7 @@ def uploadText(hash_, text):
     }
     
     createdHashes = []
+    createdIds = []
     offset = ""
 
     while True:
@@ -29,6 +31,7 @@ def uploadText(hash_, text):
             y = requests.get(listUrl, headers=headers, json={"offset":offset})
 
         for element in y.json()['records']:
+            createdIds.append(element['id'])
             createdHashes.append(element['fields']['hash'])
 
         if "offset" in y.json():
@@ -36,24 +39,37 @@ def uploadText(hash_, text):
         else:
             break
 
-    if hash_ not in createdHashes:
-        url = "https://api.airtable.com/v0/appL5PANPfvJ59eji/Links"
-        fields = {
-            "records" : [
-                {
-                    "fields" : {
-                        "hash" : hash_,
-                        "text" : text
-                    }
-                }
-            ]
-        }
+    url = "https://api.airtable.com/v0/appL5PANPfvJ59eji/Links"
 
+    fields = {
+        "records" : [
+            {
+                "fields" : {
+                    "hash" : hash_,
+                    "text" : text,
+                }
+            }
+        ]
+    }
+
+    if explode != "none":
+        fields['records'][0]['fields']['exploding'] = True
+        fields['records'][0]['fields']['exploding-field'] = explode
+        fields['records'][0]['fields']['exploding-time'] = None
+        if explode_input != "none":
+            fields['records'][0]['fields']['exploding-time'] = int(explode_input)
+    else:
+        fields['records'][0]['fields']['exploding'] = False
+        fields['records'][0]['fields']['exploding-field'] = None
+        fields['records'][0]['fields']['exploding-time'] = None
+
+    if hash_ in createdHashes:
+        fields['records'][0]['id'] = createdIds[createdHashes.index(hash_)]
+        x = requests.patch(url, json=fields, headers=headers)
+    else:
         x = requests.post(url, json=fields, headers=headers)
 
-        return x.status_code
-    else:
-        return 200
+    return x.status_code
 
 def getTextByRecordHash(hash_):
     listUrl = "https://api.airtable.com/v0/appL5PANPfvJ59eji/Links?maxRecords=3&view=Grid%20view&maxRecords=100"
@@ -117,7 +133,7 @@ def home():
         print(explode, explode_input)
 
         hashed = hashlib.md5(text.encode()).hexdigest()[:10]
-        code = uploadText(hashed, text)
+        code = uploadText(hashed, text, explode, explode_input)
 
         if code == 200:
             return render_template('pages/placeholder.home.html', trigger_modal=True, hash_=hashed, original_text=text.strip())

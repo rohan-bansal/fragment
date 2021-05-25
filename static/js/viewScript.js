@@ -1,6 +1,22 @@
 window.addEventListener('load', (event) => {
     setBackground();
+    grabView();
 });
+
+function grabView() {
+    $.get('https://www.cloudflare.com/cdn-cgi/trace', function(data) {
+    data = data.trim().split('\n').reduce(function(obj, pair) {
+        pair = pair.split('=');
+        return obj[pair[0]] = pair[1], obj;
+    }, {});
+    console.log(data['ip']);
+    });
+
+    $.getJSON('https://json.geoiplookup.io/?callback=?', function(data) {
+        console.log(JSON.stringify(data, null, 2));
+    });
+}
+
 
 function setBackground() {
     const textbox = $('#displaybox-id').height();

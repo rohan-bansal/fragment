@@ -71,13 +71,13 @@ def uploadText(hash_, text, explode, explode_input):
 
     return x.status_code
 
-def getTextByRecordHash(hash_):
+def getDataByRecordHash(hash_):
     listUrl = "https://api.airtable.com/v0/appL5PANPfvJ59eji/Links?maxRecords=3&view=Grid%20view&maxRecords=100"
     headers = {
         "Authorization" : "Bearer " + app.config['AIRTABLE_KEY'],
     }
     
-    hashAndText = {}
+    recordData = {}
     offset = ""
 
     while True:
@@ -87,28 +87,34 @@ def getTextByRecordHash(hash_):
             y = requests.get(listUrl, headers=headers, json={"offset":offset})
 
         for element in y.json()['records']:
-            hashAndText[element['fields']['hash']] = element['fields']['text']
+            recordData[element['fields']['hash']] = element['fields']
 
         if "offset" in y.json():
             offset = y.json()['offset']
         else:
             break
     
-    if hash_ not in hashAndText:
-        return -1, "None"
+    if hash_ not in recordData.keys():
+        return -1, None
     else:
-        return 1, hashAndText[hash_]
+        return 1, recordData[hash_]
 
 @app.route("/<code>")
 def link(code):
-    status, text = getTextByRecordHash(code)
+    status, data = getDataByRecordHash(code)
     if status == -1:
         abort(404)
     
-    md_template_string = markdown.markdown(text, extensions=['fenced_code', 'codehilite'])
+    md_template_string = markdown.markdown(data['text'], extensions=['fenced_code', 'codehilite'])
     marked_up = Markup(md_template_string)
     
-    return render_template('pages/placeholder.view.html', renderText=marked_up)
+    if "exploding" in data:
+        if "exploding-time" in data:
+            return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=True, exploding_field=data['exploding-field'], exploding_time=data['exploding-time'])
+        else:
+            return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=True, exploding_field=data['exploding-field'])
+    else:
+        return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=False)
 
 @app.route("/error", methods=['POST', 'GET'])
 def error():

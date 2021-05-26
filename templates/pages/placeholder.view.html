@@ -24,8 +24,15 @@
   </header>
 
   <div class="displaybox-container">
-    <div class="displaybox" id="displaybox-id">
-      {{ renderText }}
+    <div class="displaybox-wrapper">
+      {% if exploding %}
+        {% if exploding_field == 'firstview' %}
+          <h2 id="explode-enabled" style="font-family: 'Inter', sans-serif; color: white; font-weight: 700; font-size: 20px;"><i class="fas fa-bomb" style="margin-right: 10px; color: #3d88ff;"></i>This content has been set to <span class="tooltip tooltip-firstview" data-tippy-content="<strong>The writer has triggered this content to wipe itself after the first view. Refresh or close the tab at your own risk!</strong>">explode</span> after viewing.</h2>
+        {% endif %}
+      {% endif %}
+          <div class="displaybox" id="displaybox-id">
+        {{ renderText }}
+      </div>
     </div>
   </div>
 

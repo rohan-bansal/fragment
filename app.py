@@ -12,6 +12,16 @@ from markupsafe import Markup
 app = Flask(__name__, static_folder='static')
 app.config.from_object('config')
 
+def deleteRecord(id_):
+    deleteUrl = "https://api.airtable.com/v0/appL5PANPfvJ59eji/Links/" + id_
+    headers = {
+        "Authorization" : "Bearer " + app.config['AIRTABLE_KEY'],
+    }
+
+    x = requests.delete(deleteUrl, headers=headers)
+    print('record ID ' + id_ + ' deleted with status code ' + str(x.status_code))
+
+    return x.status_code
 
 def uploadText(hash_, text, explode, explode_input):
 
@@ -69,6 +79,7 @@ def uploadText(hash_, text, explode, explode_input):
     else:
         x = requests.post(url, json=fields, headers=headers)
 
+    print('content uploaded with status code ' + str(x.status_code))
     return x.status_code
 
 def getDataByRecordHash(hash_):
@@ -88,6 +99,7 @@ def getDataByRecordHash(hash_):
 
         for element in y.json()['records']:
             recordData[element['fields']['hash']] = element['fields']
+            recordData[element['fields']['hash']]['id'] = element['id']
 
         if "offset" in y.json():
             offset = y.json()['offset']
@@ -95,8 +107,10 @@ def getDataByRecordHash(hash_):
             break
     
     if hash_ not in recordData.keys():
+        print('hash not found -- invalid code')
         return -1, None
     else:
+        print('hash found, record ID ' + recordData[hash_]['id'])
         return 1, recordData[hash_]
 
 @app.route("/<code>")
@@ -112,6 +126,10 @@ def link(code):
         if "exploding-time" in data:
             return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=True, exploding_field=data['exploding-field'], exploding_time=data['exploding-time'])
         else:
+
+            if data['exploding-field'] == 'firstview':
+                deleteRecord(data['id'])
+
             return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=True, exploding_field=data['exploding-field'])
     else:
         return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=False)
@@ -136,8 +154,6 @@ def home():
         explode = request.form['does-it-explode']
         explode_input = request.form['does-it-explode-input']
         
-        print(explode, explode_input)
-
         hashed = hashlib.md5(text.encode()).hexdigest()[:10]
         code = uploadText(hashed, text, explode, explode_input)
 

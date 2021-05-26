@@ -1,6 +1,13 @@
+
 window.addEventListener('load', (event) => {
     setBackground();
     grabView();
+    tippy('.tooltip-firstview', {
+        animation: 'shift-away',
+        inertia: true,
+        animateFill: true,
+        theme: "bettertext",
+    });
 });
 
 function grabView() {

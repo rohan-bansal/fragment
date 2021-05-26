@@ -48,11 +48,14 @@ header {
     background-image: url("../img/hero_wiggle.svg");
 }
 
+.displaybox-wrapper {
+  float:left;
+  margin-left: 50%;
+  margin-top: -25vh;
+  transform: translateX(-50%);
+}
+
 .displaybox {
-    float:left;
-    margin-left: 50%;
-    margin-top: -25vh;
-    transform: translateX(-50%);
     white-space: pre-line;
     width: 45vw;
     min-height: 50vh;
@@ -143,6 +146,15 @@ header {
   .credits {
     display: none;
   }
+}
+
+.tooltip {
+  color: #3d88ff;
+  cursor: pointer;
+}
+
+.tippy-popper {
+  font-family: 'Inter', sans-serif;
 }
 
 /* Extracted Bootstrap styles (minified) */

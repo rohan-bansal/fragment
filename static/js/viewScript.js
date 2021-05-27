@@ -12,6 +12,7 @@ window.addEventListener('load', (event) => {
         theme: "bettertext",
     });
     checkExplodeType();
+    enableDeleteModal();
 });
 
 function timer() {
@@ -91,4 +92,22 @@ function setBackground() {
     $('#pattern-bottom').height(boxHeight + "px");
 
 
+}
+
+function enableDeleteModal() {
+    // var del = new tingle.modal({
+    //     footer: true,
+    //     stickyFooter: false,
+    //     closeMethods: ['overlay', 'escape'],
+    //     closeLabel: "Close",
+    //     onClose: () => {
+    //         del.destroy();
+    //     }
+    // });
+
+    // var stuff = $("#delete-link").html();
+    // del.setContent(stuff);
+
+
+    // del.open();
 }

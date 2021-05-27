@@ -140,6 +140,10 @@ header {
   .credits {
     display: none;
   }
+
+  #delete-button {
+    content: "Delete";
+  }
 }
 
 @media (max-width: 1024px) {
@@ -156,6 +160,35 @@ header {
 .tippy-popper {
   font-family: 'Inter', sans-serif;
 }
+
+#delete-button {
+  float: right;
+  margin-right: 40px;
+  margin-top: 35px;
+
+  border-radius: 10px;
+  border: none;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  color: white;
+  background-color: #FE6968;
+  font-size: 20px;
+}
+
+#delete-button:hover {
+  background-color: #fc7777;
+}
+
+#delete-button:active {
+  transform: scale(0.9);
+  transition: all linear;
+}
+
 
 /* Extracted Bootstrap styles (minified) */
 code,kbd,pre,samp {font-family: monospace,monospace;font-size:1em;}

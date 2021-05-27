@@ -17,9 +17,12 @@
       <h1 class="text-title" onclick="window.location.href='/'">Fragment</h1>
     </div>
   </div>
+  <div class="delete-content">
+    <button id="delete-button" type="button"><i class="fas fa-trash"></i></button>
+  </div>
   <header id="hero-pattern">
     <div class="credits">
-      <h3 class="me">Built with <i class="fas fa-coffee" style="margin-right: 5px; margin-left: 5px; color: #FE6968;"></i> by <a rel="noopener" target="_blank" href="https://rbansal.dev">Rohan Bansal</a></h3>
+      <h3 class="me"><i class="fas fa-coffee" style="margin-right: 5px; margin-left: 5px; color: #FE6968;"></i> by <a rel="noopener" target="_blank" href="https://rbansal.dev">Rohan Bansal</a></h3>
     </div>
   </header>
 
@@ -33,7 +36,7 @@
         {% endif %}
       {% endif %}
           <div class="displaybox" id="displaybox-id" style="
-          {% if exploding and exploding_field == '30sec' %}
+          {% if exploding %}
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             -khtml-user-select: none;
@@ -50,6 +53,10 @@
 
   <div id="pattern-bottom">
   </div>
+
+  <!-- <div id="delete-link" style="display: none">
+    <h1 style="text-align: center; font-family: 'Inter', sans-serif !important; font-weight: 700;"><i class="fas fa-trash" style="margin-right: 10px;"></i>Delete</h1>
+  </div> -->
   
 </div>
 

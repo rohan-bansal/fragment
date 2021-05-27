@@ -4,7 +4,7 @@ var counter;
 
 window.addEventListener('load', (event) => {
     setBackground();
-    grabView();
+    // grabView();
     tippy('.tooltip-firstview', {
         animation: 'shift-away',
         inertia: true,
@@ -18,11 +18,12 @@ function timer() {
     if (count <= 0) {
         deleteRecord();
         document.getElementById("countdown").innerHTML = "0";
-        // localStorage.removeItem('countdown');
+        localStorage.removeItem('countdown-session');
         clearInterval(counter);
         return;
     }
     count -= delta();
+    sessionStorage.setItem('countdown-session', count);
     displayCount(count);
 }
 
@@ -35,8 +36,8 @@ function delta() {
 }
 
 function displayCount(count) {
-    var res = count / 1000;
-    document.getElementById("countdown").innerHTML = res.toPrecision(count.toString().length);
+    var res = (count / 1000);
+    document.getElementById("countdown").innerHTML = res.toPrecision(count.toString().length - 1);
 }
 
 function deleteRecord() {
@@ -48,13 +49,10 @@ function deleteRecord() {
 function checkExplodeType() {
     const ele = document.getElementById("explode-enabled-30sec");
     if(ele) {
-        // if(localStorage.getItem('countdown') !== null) {
-            // console.log(localStorage.getItem('countdown'));
-            // count = (localStorage.getItem('countdown') - new Date()) / 1000;
-        // } else {
-            // localStorage.setItem('countdown', ((new Date()).getTime() + count));
-            // console.log(localStorage.getItem('countdown'));
-        // }
+        var sess = sessionStorage.getItem('countdown-session');
+        if (sess) {
+            count = sess;
+        }
         clearInterval(counter);
         offset   = Date.now();
         counter = setInterval(timer, 10);

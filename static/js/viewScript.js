@@ -1,3 +1,6 @@
+var count = 30000;
+var offset;
+var counter;
 
 window.addEventListener('load', (event) => {
     setBackground();
@@ -8,7 +11,55 @@ window.addEventListener('load', (event) => {
         animateFill: true,
         theme: "bettertext",
     });
+    checkExplodeType();
 });
+
+function timer() {
+    if (count <= 0) {
+        deleteRecord();
+        document.getElementById("countdown").innerHTML = "0";
+        // localStorage.removeItem('countdown');
+        clearInterval(counter);
+        return;
+    }
+    count -= delta();
+    displayCount(count);
+}
+
+function delta() {
+    var now = Date.now(),
+        d   = now - offset;
+
+    offset = now;
+    return d;
+}
+
+function displayCount(count) {
+    var res = count / 1000;
+    document.getElementById("countdown").innerHTML = res.toPrecision(count.toString().length);
+}
+
+function deleteRecord() {
+    $.post( "/" + window.location.pathname.replace(/^\/([^\/]*).*$/, '$1'), {
+    });
+    window.location.reload();
+}
+
+function checkExplodeType() {
+    const ele = document.getElementById("explode-enabled-30sec");
+    if(ele) {
+        // if(localStorage.getItem('countdown') !== null) {
+            // console.log(localStorage.getItem('countdown'));
+            // count = (localStorage.getItem('countdown') - new Date()) / 1000;
+        // } else {
+            // localStorage.setItem('countdown', ((new Date()).getTime() + count));
+            // console.log(localStorage.getItem('countdown'));
+        // }
+        clearInterval(counter);
+        offset   = Date.now();
+        counter = setInterval(timer, 10);
+    }
+}
 
 function grabView() {
     $.get('https://www.cloudflare.com/cdn-cgi/trace', function(data) {

@@ -27,10 +27,22 @@
     <div class="displaybox-wrapper">
       {% if exploding %}
         {% if exploding_field == 'firstview' %}
-          <h2 id="explode-enabled" style="font-family: 'Inter', sans-serif; color: white; font-weight: 700; font-size: 20px;"><i class="fas fa-bomb" style="margin-right: 10px; color: #3d88ff;"></i>This content has been set to <span class="tooltip tooltip-firstview" data-tippy-content="<strong>The writer has triggered this content to wipe itself after the first view. Refresh or close the tab at your own risk!</strong>">explode</span> after viewing.</h2>
+          <h2 id="explode-enabled-firstview" style="font-family: 'Inter', sans-serif; color: white; font-weight: 700; font-size: 20px;"><i class="fas fa-bomb" style="margin-right: 10px; color: #3d88ff;"></i>This content has been set to <span class="tooltip tooltip-firstview" data-tippy-content="<strong>The writer has set this content to wipe itself after the first view. Refresh or close the tab at your own risk!</strong>">explode</span> after viewing.</h2>
+        {% elif exploding_field == '30sec' %}
+          <h2 id="explode-enabled-30sec" style="font-family: 'Inter', sans-serif; color: white; font-weight: 700; font-size: 20px;"><i class="fas fa-bomb" style="margin-right: 10px; color: #3d88ff;"></i>This content has been set to <span class="tooltip tooltip-firstview" data-tippy-content="<strong>The writer has set this content to wipe itself after 30 seconds. Read fast!</strong>">explode</span> in <span style="color: #FE6968;" id="countdown"></span> seconds.</h2>
         {% endif %}
       {% endif %}
-          <div class="displaybox" id="displaybox-id">
+          <div class="displaybox" id="displaybox-id" style="
+          {% if exploding and exploding_field == '30sec' %}
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+          {% endif %}"
+          >
+            
         {{ renderText }}
       </div>
     </div>

@@ -1,16 +1,22 @@
-from flask import Flask, render_template, request, url_for, redirect, abort, send_from_directory
+from flask import Flask, render_template, request, url_for, redirect, abort, send_from_directory, session
 import logging
 from logging import Formatter, FileHandler
 import hashlib
 import requests
 import os
+import atexit
 import markdown
 import markdown.extensions.fenced_code
 from markupsafe import Markup
-
+from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime, timedelta
 
 app = Flask(__name__, static_folder='static')
 app.config.from_object('config')
+
+scheduler = BackgroundScheduler(daemon=True)
+atexit.register(lambda: scheduler.shutdown())
+scheduler.start()
 
 def deleteRecord(id_):
     deleteUrl = "https://api.airtable.com/v0/appL5PANPfvJ59eji/Links/" + id_
@@ -113,26 +119,39 @@ def getDataByRecordHash(hash_):
         print('hash found, record ID ' + recordData[hash_]['id'])
         return 1, recordData[hash_]
 
-@app.route("/<code>")
+@app.route("/<code>", methods=['POST', 'GET'])
 def link(code):
-    status, data = getDataByRecordHash(code)
-    if status == -1:
-        abort(404)
-    
-    md_template_string = markdown.markdown(data['text'], extensions=['fenced_code', 'codehilite'])
-    marked_up = Markup(md_template_string)
-    
-    if "exploding" in data:
-        if "exploding-time" in data:
-            return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=True, exploding_field=data['exploding-field'], exploding_time=data['exploding-time'])
+
+    if request.method == "GET":
+        status, data = getDataByRecordHash(code)
+        if status == -1:
+            abort(404)
+        
+        md_template_string = markdown.markdown(data['text'], extensions=['fenced_code', 'codehilite'])
+        marked_up = Markup(md_template_string)
+        
+        if "exploding" in data:
+            if "exploding-time" in data:
+                session['record_id'] = data['id']
+                return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=True, exploding_field=data['exploding-field'], exploding_time=data['exploding-time'])
+            else:
+
+                if data['exploding-field'] == 'firstview':
+                    deleteRecord(data['id'])
+                elif data['exploding-field'] == '30sec':
+                    dateObj = datetime.now() + timedelta(seconds=30)
+                    job = scheduler.add_job(func=deleteRecord, run_date=dateObj, args=[data['id']])
+
+                session['record_id'] = data['id']
+                return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=True, exploding_field=data['exploding-field'])
         else:
-
-            if data['exploding-field'] == 'firstview':
-                deleteRecord(data['id'])
-
-            return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=True, exploding_field=data['exploding-field'])
+            return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=False)
     else:
-        return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=False)
+        record_id = session.get('record_id')
+        session.pop('record_id', None)
+        if record_id is not None or record_id != "":
+            deleteRecord(record_id)
+        abort(404)
 
 @app.route("/error", methods=['POST', 'GET'])
 def error():

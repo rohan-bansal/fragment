@@ -10,6 +10,8 @@ import markdown.extensions.fenced_code
 from markupsafe import Markup
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
+from xkcdpass import xkcd_password as xp
+
 
 app = Flask(__name__, static_folder='static')
 app.config.from_object('config')
@@ -18,8 +20,11 @@ scheduler = BackgroundScheduler(daemon=True)
 atexit.register(lambda: scheduler.shutdown())
 scheduler.start()
 
+wordfile = xp.locate_wordfile()
+words = xp.generate_wordlist(wordfile=wordfile, min_length=4, max_length=9)
+
 def deleteRecord(id_):
-    deleteUrl = "https://api.airtable.com/v0/appL5PANPfvJ59eji/Links/" + id_
+    deleteUrl = app.config['BASE_URL'] + "/" + id_
     headers = {
         "Authorization" : "Bearer " + app.config['AIRTABLE_KEY'],
     }
@@ -31,7 +36,7 @@ def deleteRecord(id_):
 
 def uploadText(hash_, text, explode, explode_input):
 
-    listUrl = "https://api.airtable.com/v0/appL5PANPfvJ59eji/Links?maxRecords=3&view=Grid%20view&fields%5B%5D=hash&maxRecords=100"
+    listUrl = app.config['BASE_URL'] + "?maxRecords=3&view=Grid%20view&fields%5B%5D=hash&maxRecords=100"
     headers = {
         "Authorization" : "Bearer " + app.config['AIRTABLE_KEY'],
     }
@@ -55,7 +60,7 @@ def uploadText(hash_, text, explode, explode_input):
         else:
             break
 
-    url = "https://api.airtable.com/v0/appL5PANPfvJ59eji/Links"
+    securePass = xp.generate_xkcdpassword(words, numwords=5)
 
     fields = {
         "records" : [
@@ -63,6 +68,7 @@ def uploadText(hash_, text, explode, explode_input):
                 "fields" : {
                     "hash" : hash_,
                     "text" : text,
+                    "passphrase" : securePass
                 }
             }
         ]
@@ -81,15 +87,15 @@ def uploadText(hash_, text, explode, explode_input):
 
     if hash_ in createdHashes:
         fields['records'][0]['id'] = createdIds[createdHashes.index(hash_)]
-        x = requests.patch(url, json=fields, headers=headers)
+        x = requests.patch(app.config['BASE_URL'], json=fields, headers=headers)
     else:
-        x = requests.post(url, json=fields, headers=headers)
+        x = requests.post(app.config['BASE_URL'], json=fields, headers=headers)
 
     print('content uploaded with status code ' + str(x.status_code))
-    return x.status_code
+    return x.status_code, securePass
 
 def getDataByRecordHash(hash_):
-    listUrl = "https://api.airtable.com/v0/appL5PANPfvJ59eji/Links?maxRecords=3&view=Grid%20view&maxRecords=100"
+    listUrl = app.config['BASE_URL'] + "?maxRecords=3&view=Grid%20view&maxRecords=100"
     headers = {
         "Authorization" : "Bearer " + app.config['AIRTABLE_KEY'],
     }
@@ -174,10 +180,10 @@ def home():
         explode_input = request.form['does-it-explode-input']
         
         hashed = hashlib.md5(text.encode()).hexdigest()[:10]
-        code = uploadText(hashed, text, explode, explode_input)
+        code, passphrase = uploadText(hashed, text, explode, explode_input)
 
         if code == 200:
-            return render_template('pages/placeholder.home.html', trigger_modal=True, hash_=hashed, original_text=text.strip())
+            return render_template('pages/placeholder.home.html', trigger_modal=True, hash_=hashed, passphrase=passphrase, original_text=text.strip())
         else:
             return redirect(url_for('error'))
 

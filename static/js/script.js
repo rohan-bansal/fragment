@@ -15,6 +15,9 @@ function validateTextArea() {
 
 window.addEventListener('load', (event) => {
     createModal();
+    tippy('#copybutton-text', {
+        trigger: 'click',
+    })
 });
 
 function preview() {
@@ -106,7 +109,6 @@ function createModal() {
     if(el.className == "trigger-True") {
         hash = document.getElementById('hashspan').innerHTML;
         document.getElementById('hashspan').textContent = window.location.hostname + "/" + hash;
-        console.log(window.location.hostname, hash)
         document.getElementById('hasha').href = "https://" + window.location.hostname + "/" + hash;
         var modal = new tingle.modal({
             footer: true,
@@ -127,3 +129,11 @@ function createModal() {
         modal.open();
     }
 }
+
+function copyToClipboard(element) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val($(element).clone().children().remove().end().text()).select();
+    document.execCommand("copy");
+    $temp.remove();
+  }

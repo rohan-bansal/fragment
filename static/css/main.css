@@ -1,5 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono&display=swap');
 
 html {
   overflow-x: hidden;
@@ -353,4 +354,27 @@ h5 a:hover {
 
 .tingle-modal-box__footer:empty {
   display: none !important;
+}
+
+#passphrase-text {
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 20px;
+  color: gray;
+}
+
+.passphrase-info {
+  text-align: center; 
+  font-family: 'Inter', sans-serif; 
+  padding-top: 20px;
+}
+
+.copybutton {
+  font-size: 14px;
+  color: #3A83F6;
+  font-family: 'Inter', sans-serif;
+}
+
+.tippy-popper {
+  font-family: 'Inter', sans-serif;
 }

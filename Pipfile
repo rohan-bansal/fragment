@@ -15,6 +15,7 @@ gunicorn = "*"
 python-dotenv = "*"
 flask-session = "*"
 apscheduler = "*"
+xkcdpass = "*"
 
 [requires]
 python_version = "3.8"

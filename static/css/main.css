@@ -152,6 +152,22 @@ textarea {
   color: #4f91fa;
 }
 
+#link-set {
+  line-height: 1.5;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+}
+
+#link-set a {
+  text-decoration: none;
+  color: #317efa;
+}
+
+#link-set a:hover {
+  text-decoration: none;
+  color: #3A83F6;
+}
+
 .betterbar::-webkit-scrollbar {
   width: 6px;
 }

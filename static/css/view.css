@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap');
+
 html,
 body {
   height: 100vh;
@@ -56,8 +58,8 @@ header {
 }
 
 .displaybox {
-    white-space: pre-line;
     width: 45vw;
+    line-height: 1.5;
     min-height: 50vh;
     background-color: #ffffff;
     border: 6px solid #3A83F6;
@@ -67,9 +69,19 @@ header {
 
     color: #1B191B;
     font-size: 16px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Work Sans', sans-serif;
     font-weight: 400;
     margin-bottom: 100px;
+}
+
+.displaybox a {
+  text-decoration: none;
+  color: #317efa;
+}
+
+.displaybox a:hover {
+  text-decoration: none;
+  color: #3A83F6;
 }
 
 .displaybox::after {
@@ -189,6 +201,56 @@ header {
   transition: all linear;
 }
 
+.tingle-modal-box {
+  width: auto !important;
+}
+
+.tingle-modal-box__footer:empty {
+  display: none !important;
+}
+
+#delete-title {
+  text-align: center; 
+  font-family: 'Inter', sans-serif !important; 
+  font-weight: 700;
+}
+
+#delete-desc {
+  text-align: center; 
+  font-family: 'Inter', sans-serif !important; 
+  font-weight: 400;
+}
+
+.tingle-modal-box {
+  text-align: center;
+  margin: 0 auto;
+}
+
+#delete-passphrase {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  width: 100%;
+  border: 2px solid #3d88ff;
+  border-radius: 5px;
+}
+
+
+.tingle-btn--default {
+  border-radius: 8px;
+  background-color: #FE6968 !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700;
+}
+
+.tingle-btn--default:hover {
+  background-color: #e67171 !important;
+}
+
+.tingle-btn--default:active {
+  transform: scale(0.9);
+  transition: all linear;
+}
 
 /* Extracted Bootstrap styles (minified) */
 code,kbd,pre,samp {font-family: monospace,monospace;font-size:1em;}

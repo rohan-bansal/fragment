@@ -12,7 +12,7 @@ window.addEventListener('load', (event) => {
         theme: "bettertext",
     });
     checkExplodeType();
-    enableDeleteModal();
+    // enableDeleteModal();
 });
 
 function timer() {
@@ -95,19 +95,19 @@ function setBackground() {
 }
 
 function enableDeleteModal() {
-    // var del = new tingle.modal({
-    //     footer: true,
-    //     stickyFooter: false,
-    //     closeMethods: ['overlay', 'escape'],
-    //     closeLabel: "Close",
-    //     onClose: () => {
-    //         del.destroy();
-    //     }
-    // });
+    var del = new tingle.modal({
+        footer: true,
+        stickyFooter: false,
+        closeMethods: ['overlay', 'escape'],
+        closeLabel: "Close",
+        onClose: () => {
+            del.destroy();
+        }
+    });
 
-    // var stuff = $("#delete-link").html();
-    // del.setContent(stuff);
+    var stuff = $("#delete-link").html();
+    del.setContent(stuff);
 
 
-    // del.open();
+    del.open();
 }

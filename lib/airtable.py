@@ -1,5 +1,5 @@
 from config import BASE_URL, AIRTABLE_KEY
-import requests
+import requests, json
 from xkcdpass import xkcd_password as xp
 
 wordfile = xp.locate_wordfile()
@@ -74,7 +74,8 @@ def uploadText(hash_, text, explode, explode_input):
         x = requests.post(BASE_URL, json=fields, headers=headers)
 
     print('content uploaded with status code ' + str(x.status_code))
-    return x.status_code, securePass
+    print()
+    return x.status_code, securePass, json.loads(x.content.decode("utf-8"))['records'][0]['id']
 
 def getDataByRecordHash(hash_):
     listUrl = BASE_URL + "?maxRecords=3&view=Grid%20view&maxRecords=100"

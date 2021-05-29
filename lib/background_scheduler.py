@@ -14,6 +14,7 @@ class SchedulerModule():
 
     def add_job(self, **kwargs):
         self.jobs.append(self.scheduler.add_job(**kwargs))
+        print("Job added: Size " + str(len(self.jobs)))
 
     def remove_job(self, id_):
         for i, job in enumerate(self.jobs[:]):

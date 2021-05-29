@@ -252,6 +252,18 @@ header {
   transition: all linear;
 }
 
+.explode-desc-text {
+  font-family: 'Inter', sans-serif; 
+  color: white; 
+  font-weight: 700; 
+  font-size: 20px;
+}
+
+.explode-desc-text i {
+  margin-right: 10px; 
+  color: #3d88ff;
+}
+
 /* Extracted Bootstrap styles (minified) */
 code,kbd,pre,samp {font-family: monospace,monospace;font-size:1em;}
 

@@ -30,6 +30,7 @@ def delfunc():
     if data['passphrase'] == passphrase:
 
         deleteRecord(data['id'])
+        Schedule.instance().remove_job(data['id'])
 
         session['deleted_validation'] = "done"
         return redirect(url_for('fragment.delsuccess'))
@@ -61,7 +62,20 @@ def link(code):
         if "exploding" in data:
             if "exploding-time" in data:
                 session['record_id'] = data['id']
-                return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=True, exploding_field=data['exploding-field'], exploding_time=data['exploding-time'])
+
+                dateObj = datetime.now()
+
+                if data['exploding-field'] == 'xhour':
+                    dateObj = datetime.now() + timedelta(hours=data['exploding-time'])
+
+                return render_template(
+                    'pages/placeholder.view.html', 
+                    renderText=marked_up, 
+                    exploding=True, 
+                    exploding_field=data['exploding-field'], 
+                    exploding_time=dateObj.strftime('%I:%M %p'),
+                    exploding_date=dateObj.strftime('%b %e, %Y')
+                )
             else:
                 if data['exploding-field'] == 'firstview':
                     deleteRecord(data['id'])
@@ -69,6 +83,7 @@ def link(code):
                     if not Schedule.instance().jobWithIdExists(data['id']):
                         dateObj = datetime.now() + timedelta(seconds=30)
                         job = Schedule.instance().add_job(func=deleteRecord, run_date=dateObj, id=data['id'], args=[data['id']])
+
                 session['record_id'] = data['id']
                 return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=True, exploding_field=data['exploding-field'])
         else:
@@ -94,7 +109,12 @@ def home():
         explode_input = request.form['does-it-explode-input']
         
         hashed = hashlib.md5(text.encode()).hexdigest()[:10]
-        code, passphrase = uploadText(hashed, text, explode, explode_input)
+        code, passphrase, record_id = uploadText(hashed, text, explode, explode_input)
+
+        if explode == 'xhour':
+            if not Schedule.instance().jobWithIdExists(record_id):
+                dateObj = datetime.now() + timedelta(hours=int(explode_input))
+                job = Schedule.instance().add_job(func=deleteRecord, run_date=dateObj, id=record_id, args=[record_id])
 
         if code == 200:
             return render_template('pages/placeholder.home.html', trigger_modal=True, hash_=hashed, passphrase=passphrase, original_text=text.strip())

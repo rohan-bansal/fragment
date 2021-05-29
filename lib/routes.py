@@ -40,8 +40,6 @@ def delfunc():
 @fragment.route("/content/delete_success", methods=['GET'])
 def delsuccess():
 
-    print(request.referrer)
-
     if session.get('deleted_validation') is None or session.get('deleted_validation') == "":
         abort(404)
 
@@ -65,13 +63,12 @@ def link(code):
                 session['record_id'] = data['id']
                 return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=True, exploding_field=data['exploding-field'], exploding_time=data['exploding-time'])
             else:
-
                 if data['exploding-field'] == 'firstview':
                     deleteRecord(data['id'])
                 elif data['exploding-field'] == '30sec':
-                    dateObj = datetime.now() + timedelta(seconds=30)
-                    job = Schedule.instance().add_job(func=deleteRecord, run_date=dateObj, args=[data['id']])
-
+                    if not Schedule.instance().jobWithIdExists(data['id']):
+                        dateObj = datetime.now() + timedelta(seconds=30)
+                        job = Schedule.instance().add_job(func=deleteRecord, run_date=dateObj, id=data['id'], args=[data['id']])
                 session['record_id'] = data['id']
                 return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=True, exploding_field=data['exploding-field'])
         else:

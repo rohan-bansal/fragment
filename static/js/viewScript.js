@@ -20,7 +20,7 @@ function timer() {
     if (count <= 0) {
         deleteRecord();
         document.getElementById("countdown").innerHTML = "0";
-        localStorage.removeItem('countdown-session');
+        sessionStorage.removeItem('countdown-session');
         clearInterval(counter);
         return;
     }

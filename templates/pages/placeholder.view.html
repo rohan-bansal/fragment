@@ -55,10 +55,12 @@
   </div>
 
   <div id="delete-link" style="display: none">
-    <h1 id="delete-title"><i class="fas fa-trash" style="margin-right: 15px; color: #fc7777;"></i>Delete</h1>
-    <h3 id="delete-desc">Enter the unique 5 word passphrase associated with this content.</h3>
-    <input name="passphrase" id="delete-passphrase" type="text"/>
-    <button type="submit" id="explode-done" class="tingle-btn tingle-btn--default" style="text-align: center; margin-top: 30px;" >Remove</button>
+    <form id="delete-form" action="/" method="POST">
+      <h1 id="delete-title"><i class="fas fa-trash" style="margin-right: 15px; color: #fc7777;"></i>Delete</h1>
+      <h3 id="delete-desc">Enter the unique 5 word passphrase associated with this content.</h3>
+      <input name="passphrase" id="delete-passphrase" type="text"/>
+      <button type="submit" id="explode-done" class="tingle-btn tingle-btn--default" style="text-align: center; margin-top: 30px;" >Remove</button>
+    </form>
   </div>
   
 </div>

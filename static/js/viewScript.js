@@ -2,6 +2,7 @@ var count = 30000;
 var offset;
 var counter;
 
+
 window.addEventListener('load', (event) => {
     setBackground();
     // grabView();

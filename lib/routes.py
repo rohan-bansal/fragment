@@ -11,13 +11,43 @@ from lib.background_scheduler import Schedule
 fragment = Blueprint('fragment', __name__)
 
 
+
 @fragment.route("/content/delete", methods=['POST'])
 def delfunc():
 
-    print(request.referrer)
     passphrase = request.form['passphrase']
     passphrase = passphrase.strip()
-    print(passphrase)
+
+    record_hash = request.referrer.split('/')[-1]
+
+    if passphrase is None or passphrase == "":
+        return redirect(url_for('fragment.link', code=record_hash))
+
+    status, data = getDataByRecordHash(record_hash)
+    if status == -1:
+        abort(500)
+
+    if data['passphrase'] == passphrase:
+
+        deleteRecord(data['id'])
+
+        session['deleted_validation'] = "done"
+        return redirect(url_for('fragment.delsuccess'))
+    else:
+        return redirect(url_for('fragment.link', code=record_hash))
+
+
+@fragment.route("/content/delete_success", methods=['GET'])
+def delsuccess():
+
+    print(request.referrer)
+
+    if session.get('deleted_validation') is None or session.get('deleted_validation') == "":
+        abort(404)
+
+    session.pop('deleted_validation', None)
+    return render_template('pages/placeholder.delete_success.html')
+    
 
 @fragment.route("/<code>", methods=['POST', 'GET'])
 def link(code):
@@ -76,7 +106,7 @@ def home():
 
 @fragment.errorhandler(500)
 def internal_error(error):
-    render_template('errors/placeholder.error.html', error_text="Code 500.")
+    render_template('errors/placeholder.error.html', error_text="Internal Server Error (500)")
 
 
 @fragment.errorhandler(404)

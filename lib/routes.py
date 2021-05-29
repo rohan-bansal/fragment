@@ -11,12 +11,13 @@ from lib.background_scheduler import Schedule
 fragment = Blueprint('fragment', __name__)
 
 
-@fragment.route("/delcontent")
+@fragment.route("/content/delete", methods=['POST'])
 def delfunc():
 
     print(request.referrer)
     passphrase = request.form['passphrase']
     passphrase = passphrase.strip()
+    print(passphrase)
 
 @fragment.route("/<code>", methods=['POST', 'GET'])
 def link(code):

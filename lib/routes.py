@@ -24,6 +24,7 @@ def viewcounter():
 
     counter = data['view-counter']
     limit = data['variable-limit']
+    addresses = ""
 
     if 'view-counter-addresses' in data:
         addresses = data['view-counter-addresses']
@@ -31,20 +32,18 @@ def viewcounter():
         if ip_address['ip'] not in addresses:
             addresses += "," + ip_address['ip']
             counter += 1
-            updateRecordField(data['id'], {
-                "view-counter-addresses":addresses,
-                "view-counter":counter
-            })
     else:
         addresses = ip_address['ip']
         counter += 1
+
+    
+    if counter >= limit:
+        Schedule.instance().add_job(func=deleteRecord, run_date=(datetime.now() + timedelta(seconds=7)), args=[data['id']])
+    else:
         updateRecordField(data['id'], {
             "view-counter-addresses":addresses,
             "view-counter":counter
         })
-    
-    if counter >= limit:
-        Schedule.instance().add_job(func=deleteRecord, run_date=(datetime.now() + timedelta(seconds=7)), args=[data['id']])
 
     return "success"
 

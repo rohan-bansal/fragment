@@ -44,7 +44,7 @@ def viewcounter():
         })
     
     if counter >= limit:
-        deleteRecord(data['id'])
+        Schedule.instance().add_job(func=deleteRecord, run_date=(datetime.now() + timedelta(seconds=7)), args=[data['id']])
 
     return "success"
 

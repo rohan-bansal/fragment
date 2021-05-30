@@ -8,6 +8,8 @@ import hashlib
 from lib.airtable import *
 from lib.background_scheduler import Schedule
 
+
+
 fragment = Blueprint('fragment', __name__)
 
 @fragment.route("/content/viewcounter", methods=['POST'])

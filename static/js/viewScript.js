@@ -5,7 +5,6 @@ var counter;
 
 window.addEventListener('load', (event) => {
     setBackground();
-    // grabView();
     tippy('.tooltip-firstview', {
         animation: 'shift-away',
         inertia: true,
@@ -13,7 +12,6 @@ window.addEventListener('load', (event) => {
         theme: "bettertext",
     });
     checkExplodeType();
-    // enableDeleteModal();
 });
 
 function timer() {
@@ -55,26 +53,41 @@ function checkExplodeType() {
         if (sess) {
             count = sess;
         }
+        count = 30000
         clearInterval(counter);
         offset   = Date.now();
         counter = setInterval(timer, 10);
     }
+    const ele2 = document.getElementById("explode-enabled-xsec");
+    if(ele2) {
+        var sess = sessionStorage.getItem('countdown-session');
+        if (sess) {
+            count = sess;
+        }
+        count = parseInt(document.getElementById("countdown").innerHTML) * 1000;
+        clearInterval(counter);
+        offset   = Date.now();
+        counter = setInterval(timer, 10);
+    }
+    const ele3 = document.getElementById("explode-enabled-xviews");
+    if(ele3) {
+        $.get('https://www.cloudflare.com/cdn-cgi/trace', function(data) {
+            data = data.trim().split('\n').reduce(function(obj, pair) {
+                pair = pair.split('=');
+                return obj[pair[0]] = pair[1], obj;
+            }, {});
+            $.ajax({
+                type: 'POST',
+                url: '/content/viewcounter',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8',
+                data: JSON.stringify({
+                    "ip" : data['ip']
+                }),
+            });
+        });   
+    }
 }
-
-function grabView() {
-    $.get('https://www.cloudflare.com/cdn-cgi/trace', function(data) {
-    data = data.trim().split('\n').reduce(function(obj, pair) {
-        pair = pair.split('=');
-        return obj[pair[0]] = pair[1], obj;
-    }, {});
-    console.log(data['ip']);
-    });
-
-    $.getJSON('https://json.geoiplookup.io/?callback=?', function(data) {
-        console.log(JSON.stringify(data, null, 2));
-    });
-}
-
 
 function setBackground() {
     const textbox = $('#displaybox-id').height();

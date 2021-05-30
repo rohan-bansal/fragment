@@ -1,7 +1,6 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
 
-
 class SchedulerModule():
 
     scheduler = None
@@ -22,6 +21,7 @@ class SchedulerModule():
                 try:
                     job.remove()
                     del jobs[i]
+                    print("Job removed: Size " + str(len(self.jobs)))
                 except:
                     return False
                 return True

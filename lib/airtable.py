@@ -16,6 +16,22 @@ def deleteRecord(id_):
 
     return x.status_code
 
+def updateRecordField(id_, field_data):
+    updateURL = BASE_URL + "/" + id_
+    headers = {
+        "Authorization" : "Bearer " + AIRTABLE_KEY,
+        "Content-Type" : "application/json"
+    }
+
+    data = {
+        "fields" : field_data
+    }
+
+    x = requests.patch(updateURL, headers=headers, json=data)
+    print('record ID ' + id_ + ' patched with status code ' + str(x.status_code))
+
+    return x.status_code
+
 def uploadText(hash_, text, explode, explode_input):
 
     listUrl = BASE_URL + "?maxRecords=3&view=Grid%20view&fields%5B%5D=hash&maxRecords=100"
@@ -59,13 +75,13 @@ def uploadText(hash_, text, explode, explode_input):
     if explode != "none":
         fields['records'][0]['fields']['exploding'] = True
         fields['records'][0]['fields']['exploding-field'] = explode
-        fields['records'][0]['fields']['exploding-time'] = None
+        fields['records'][0]['fields']['variable-limit'] = None
         if explode_input != "none":
-            fields['records'][0]['fields']['exploding-time'] = int(explode_input)
+            fields['records'][0]['fields']['variable-limit'] = int(explode_input)
     else:
         fields['records'][0]['fields']['exploding'] = False
         fields['records'][0]['fields']['exploding-field'] = None
-        fields['records'][0]['fields']['exploding-time'] = None
+        fields['records'][0]['fields']['variable-limit'] = None
 
     if hash_ in createdHashes:
         fields['records'][0]['id'] = createdIds[createdHashes.index(hash_)]

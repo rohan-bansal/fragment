@@ -35,7 +35,11 @@
           <h2 id="explode-enabled-30sec" class="explode-desc-text"><i class="fas fa-bomb"></i>This content will <span class="tooltip tooltip-firstview" data-tippy-content="<strong>The writer has set this content to wipe itself after 30 seconds. Read fast!</strong>">explode</span> in <span style="color: #FE6968;" id="countdown"></span> seconds.</h2>
         {% elif exploding_field == 'xhour' %}
           <h2 id="explode-enabled-xhour" class="explode-desc-text"><i class="fas fa-bomb"></i>This content will <span class="tooltip tooltip-firstview" data-tippy-content="<strong>The writer has set this content to wipe itself at the specified time.</strong>">explode</span> at <span style="color: #FE6968;">{{ exploding_time }}</span> on <span style="color: #FE6968;">{{ exploding_date }}</span></h2>
-          {% endif %}
+        {% elif exploding_field == 'xsec' %}
+          <h2 id="explode-enabled-xsec" class="explode-desc-text"><i class="fas fa-bomb"></i>This content will <span class="tooltip tooltip-firstview" data-tippy-content="<strong>The writer has set this content to wipe itself after the specified amount of seconds. Read fast!</strong>">explode</span> in <span style="color: #FE6968;" id="countdown">{{ exploding_time }}</span> seconds.</h2>
+        {% elif exploding_field == 'xviews' %}
+          <h2 id="explode-enabled-xviews" class="explode-desc-text"><i class="fas fa-bomb"></i>This content will <span class="tooltip tooltip-firstview" data-tippy-content="<strong>The writer has set this content to wipe itself after the stated amount of page views. You made it here in time!</strong>">explode</span> after <span style="color: #FE6968;" id="countdown">{{ exploding_views }}</span> views.</h2>
+        {% endif %}
       {% endif %}
           <div class="displaybox" id="displaybox-id" style="
           {% if exploding %}
@@ -64,8 +68,6 @@
       <button type="submit" id="explode-done" class="tingle-btn tingle-btn--default" style="text-align: center; margin-top: 30px;">Remove</button>
     </form>
   </div>
-
-  <div id="error-message">{{ error_message }}</div>
 </div>
 
 

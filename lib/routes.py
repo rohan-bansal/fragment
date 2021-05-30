@@ -10,7 +10,41 @@ from lib.background_scheduler import Schedule
 
 fragment = Blueprint('fragment', __name__)
 
+@fragment.route("/content/viewcounter", methods=['POST'])
+def viewcounter():
+    ip_address = request.get_json()
+    print(ip_address['ip'], request.base_url)
 
+    record_hash = request.referrer.split('/')[-1].split("?")[0].split("#")[0]
+    status, data = getDataByRecordHash(record_hash)
+    if status == -1:
+        abort(500)
+
+    counter = data['view-counter']
+    limit = data['variable-limit']
+
+    if 'view-counter-addresses' in data:
+        addresses = data['view-counter-addresses']
+
+        if ip_address['ip'] not in addresses:
+            addresses += "," + ip_address['ip']
+            counter += 1
+            updateRecordField(data['id'], {
+                "view-counter-addresses":addresses,
+                "view-counter":counter
+            })
+    else:
+        addresses = ip_address['ip']
+        counter += 1
+        updateRecordField(data['id'], {
+            "view-counter-addresses":addresses,
+            "view-counter":counter
+        })
+    
+    if counter >= limit:
+        deleteRecord(data['id'])
+
+    return "success"
 
 @fragment.route("/content/delete", methods=['POST'])
 def delfunc():
@@ -18,7 +52,7 @@ def delfunc():
     passphrase = request.form['passphrase']
     passphrase = passphrase.strip()
 
-    record_hash = request.referrer.split('/')[-1]
+    record_hash = request.referrer.split('/')[-1].split("?")[0].split("#")[0]
 
     if passphrase is None or passphrase == "":
         return redirect(url_for('fragment.link', code=record_hash))
@@ -60,22 +94,36 @@ def link(code):
         marked_up = Markup(md_template_string)
         
         if "exploding" in data:
-            if "exploding-time" in data:
+            if "variable-limit" in data:
                 session['record_id'] = data['id']
 
                 dateObj = datetime.now()
+                exploding_time = None
+                exploding_date = None
+                exploding_views = None
 
                 if data['exploding-field'] == 'xhour':
-                    dateObj = datetime.now() + timedelta(hours=data['exploding-time'])
+                    dateObj = datetime.now() + timedelta(hours=data['variable-limit'])
+                    exploding_time = dateObj.strftime('%I:%M %p')
+                    exploding_date = dateObj.strftime('%b %e, %Y')
+                elif data['exploding-field'] == 'xsec':
+                    dateObj = datetime.now() + timedelta(seconds=data['variable-limit'])
+                    if not Schedule.instance().jobWithIdExists(data['id']):
+                        job = Schedule.instance().add_job(func=deleteRecord, run_date=dateObj, id=data['id'], args=[data['id']])
+                    exploding_time = data['variable-limit']
+                elif data['exploding-field'] == 'xviews':
+                    exploding_views = int(data['variable-limit'])
 
                 return render_template(
                     'pages/placeholder.view.html', 
                     renderText=marked_up, 
                     exploding=True, 
                     exploding_field=data['exploding-field'], 
-                    exploding_time=dateObj.strftime('%I:%M %p'),
-                    exploding_date=dateObj.strftime('%b %e, %Y')
+                    exploding_time=exploding_time,
+                    exploding_date=exploding_date,
+                    exploding_views=exploding_views
                 )
+               
             else:
                 if data['exploding-field'] == 'firstview':
                     deleteRecord(data['id'])

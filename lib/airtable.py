@@ -66,7 +66,8 @@ def uploadText(hash_, text, explode, explode_input):
                 "fields" : {
                     "hash" : hash_,
                     "text" : text,
-                    "passphrase" : securePass
+                    "passphrase" : securePass,
+                    "view-counter" : 0
                 }
             }
         ]

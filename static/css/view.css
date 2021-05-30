@@ -147,6 +147,7 @@ header {
 @media (max-width: 767px) {
   .displaybox {
     width: 65vw;
+    text-align: left;
   }
 
   .credits {
@@ -155,6 +156,10 @@ header {
 
   #delete-button {
     content: "Delete";
+  }
+
+  .displaybox-wrapper {
+    text-align: center;
   }
 }
 

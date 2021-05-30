@@ -348,7 +348,12 @@ h5 a:hover {
   }
 
   .textfield-body-wrapper {
-    margin-top: 8%;
+    margin-top: 14%;
+  }
+
+  #explode-enabled {
+    margin-top: 4% !important;
+    font-size: 16px !important;
   }
 
   .credits {
@@ -356,6 +361,15 @@ h5 a:hover {
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
+    width: fit-content;
+  }
+
+  #hasha {
+    line-height: 1.7;
+  }
+
+  .credits .me {
+    font-size: 14px !important;
   }
 
   .button-group {

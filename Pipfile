@@ -16,6 +16,8 @@ python-dotenv = "*"
 flask-session = "*"
 apscheduler = "*"
 xkcdpass = "*"
+bleach = "*"
+bleach-allowlist = "*"
 
 [requires]
 python_version = "3.8"

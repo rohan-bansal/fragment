@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect, abort, send_from_directory, session
 from flask import Blueprint
+import bleach
+from bleach_allowlist import print_tags, print_attrs, all_styles
 import markdown.extensions.fenced_code
 from markupsafe import Markup
 from datetime import datetime, timedelta
@@ -8,9 +10,14 @@ import hashlib
 from lib.airtable import *
 from lib.background_scheduler import Schedule
 
-
-
 fragment = Blueprint('fragment', __name__)
+allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
+                'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
+                'h1', 'h2', 'h3', 'p', 'img', 'div', 'p', 'br', 'span', 'hr']
+
+allowed_attrs = {'*': ['class'],
+                'a': ['href', 'rel'],
+                'img': ['src', 'alt']}
 
 @fragment.route("/content/viewcounter", methods=['POST'])
 def viewcounter():
@@ -91,8 +98,10 @@ def link(code):
         if status == -1:
             abort(404)
         
-        md_template_string = markdown.markdown(data['text'], extensions=['fenced_code', 'codehilite'])
+        md_template_string = markdown.markdown(data['text'], extensions=['fenced_code', 'codehilite'], safe_mode=True, enable_attributes=False)
         marked_up = Markup(md_template_string)
+
+        cleaned_mdx = bleach.clean(marked_up, strip=True, tags=print_tags, attributes=print_attrs, styles=all_styles).strip()
         
         if "exploding" in data:
             if "variable-limit" in data:
@@ -117,7 +126,7 @@ def link(code):
 
                 return render_template(
                     'pages/placeholder.view.html', 
-                    renderText=marked_up, 
+                    renderText=cleaned_mdx, 
                     exploding=True, 
                     exploding_field=data['exploding-field'], 
                     exploding_time=exploding_time,
@@ -134,9 +143,9 @@ def link(code):
                         job = Schedule.instance().add_job(func=deleteRecord, run_date=dateObj, id=data['id'], args=[data['id']])
 
                 session['record_id'] = data['id']
-                return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=True, exploding_field=data['exploding-field'])
+                return render_template('pages/placeholder.view.html', renderText=cleaned_mdx, exploding=True, exploding_field=data['exploding-field'])
         else:
-            return render_template('pages/placeholder.view.html', renderText=marked_up, exploding=False)
+            return render_template('pages/placeholder.view.html', renderText=cleaned_mdx, exploding=False)
     else:
         record_id = session.get('record_id')
         session.pop('record_id', None)

@@ -8,8 +8,18 @@ function validateTextArea() {
             text: 'Write something first!',
             icon: 'error',
         })
-      return false;
+        return false;
     }
+
+    if(x.length > 100000) {
+        Swal.fire({
+            title: 'Error!',
+            text: 'Must be under 100k characters.',
+            icon: 'error',
+        })
+        return false;
+    }
+
     return true;
 }
 

@@ -2,6 +2,19 @@ var count = 30000;
 var offset;
 var counter;
 
+function formatForDisplay(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    var month = date.toLocaleString('default', { month: 'short' });
+    var day = date.getDate();
+    year = date.getFullYear();
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return [strTime, month + " " + day + ", " + year];
+}
 
 window.addEventListener('load', (event) => {
     setBackground();
@@ -86,6 +99,16 @@ function checkExplodeType() {
                 }),
             });
         });   
+    }
+    const ele4 = document.getElementById("explode-enabled-xhour");
+    if(ele4) {
+        const time = document.getElementById("utc-server-time").innerHTML;
+        
+        const date = new Date(time);
+        const localDate = formatForDisplay(date);
+
+        document.getElementById("et-time").innerHTML = localDate[0]
+        document.getElementById("et-date").innerHTML = localDate[1]
     }
 }
 

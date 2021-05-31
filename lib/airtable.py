@@ -1,5 +1,6 @@
 from config import BASE_URL, AIRTABLE_KEY
 import requests, json
+from datetime import datetime
 from xkcdpass import xkcd_password as xp
 
 wordfile = xp.locate_wordfile()
@@ -123,4 +124,5 @@ def getDataByRecordHash(hash_):
         return -1, None
     else:
         print('hash found, record ID ' + recordData[hash_]['id'])
+        print(recordData[hash_]['created'])
         return 1, recordData[hash_]

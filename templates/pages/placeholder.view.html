@@ -34,7 +34,8 @@
         {% elif exploding_field == '30sec' %}
           <h2 id="explode-enabled-30sec" class="explode-desc-text"><i class="fas fa-bomb"></i>This content will <span class="tooltip tooltip-firstview" data-tippy-content="<strong>The writer has set this content to wipe itself after 30 seconds. Read fast!</strong>">explode</span> in <span style="color: #FE6968;" id="countdown"></span> seconds.</h2>
         {% elif exploding_field == 'xhour' %}
-          <h2 id="explode-enabled-xhour" class="explode-desc-text"><i class="fas fa-bomb"></i>This content will <span class="tooltip tooltip-firstview" data-tippy-content="<strong>The writer has set this content to wipe itself at the specified time.</strong>">explode</span> at <span style="color: #FE6968;">{{ exploding_time }}</span> on <span style="color: #FE6968;">{{ exploding_date }}</span></h2>
+          <p id="utc-server-time" style="display: none;">{{ exploding_time }}</p>
+          <h2 id="explode-enabled-xhour" class="explode-desc-text"><i class="fas fa-bomb"></i>This content will <span class="tooltip tooltip-firstview" data-tippy-content="<strong>The writer has set this content to wipe itself at the specified time.</strong>">explode</span> at <span id="et-time" style="color: #FE6968;"></span> on <span id="et-date" style="color: #FE6968;"></span></h2>
         {% elif exploding_field == 'xsec' %}
           <h2 id="explode-enabled-xsec" class="explode-desc-text"><i class="fas fa-bomb"></i>This content will <span class="tooltip tooltip-firstview" data-tippy-content="<strong>The writer has set this content to wipe itself after the specified amount of seconds. Read fast!</strong>">explode</span> in <span style="color: #FE6968;" id="countdown">{{ exploding_time }}</span> seconds.</h2>
         {% elif exploding_field == 'xviews' %}

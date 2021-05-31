@@ -104,9 +104,9 @@ def link(code):
                 exploding_views = None
 
                 if data['exploding-field'] == 'xhour':
-                    dateObj = datetime.now() + timedelta(hours=data['variable-limit'])
-                    exploding_time = dateObj.strftime('%I:%M %p')
-                    exploding_date = dateObj.strftime('%b %e, %Y')
+                    createdTime = datetime.fromisoformat(data['created'].split("Z")[0])
+                    dateObj = createdTime + timedelta(hours=data['variable-limit'])
+                    exploding_time = dateObj.isoformat() + "Z"
                 elif data['exploding-field'] == 'xsec':
                     dateObj = datetime.now() + timedelta(seconds=data['variable-limit'])
                     if not Schedule.instance().jobWithIdExists(data['id']):

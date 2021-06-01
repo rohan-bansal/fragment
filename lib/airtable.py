@@ -1,4 +1,4 @@
-from config import BASE_URL, AIRTABLE_KEY
+from config import AIRTABLE_BASE_URL, AIRTABLE_KEY
 import requests, json
 from datetime import datetime
 from xkcdpass import xkcd_password as xp
@@ -7,7 +7,7 @@ wordfile = xp.locate_wordfile()
 words = xp.generate_wordlist(wordfile=wordfile, min_length=4, max_length=9)
 
 def deleteRecord(id_):
-    deleteUrl = BASE_URL + "/" + id_
+    deleteUrl = AIRTABLE_BASE_URL + "/" + id_
     headers = {
         "Authorization" : "Bearer " + AIRTABLE_KEY,
     }
@@ -18,7 +18,7 @@ def deleteRecord(id_):
     return x.status_code
 
 def updateRecordField(id_, field_data):
-    updateURL = BASE_URL + "/" + id_
+    updateURL = AIRTABLE_BASE_URL + "/" + id_
     headers = {
         "Authorization" : "Bearer " + AIRTABLE_KEY,
         "Content-Type" : "application/json"
@@ -35,7 +35,7 @@ def updateRecordField(id_, field_data):
 
 def uploadText(hash_, text, explode, explode_input):
 
-    listUrl = BASE_URL + "?maxRecords=3&view=Grid%20view&fields%5B%5D=hash&maxRecords=100"
+    listUrl = AIRTABLE_BASE_URL + "?maxRecords=3&view=Grid%20view&fields%5B%5D=hash&maxRecords=100"
     headers = {
         "Authorization" : "Bearer " + AIRTABLE_KEY,
     }
@@ -87,16 +87,16 @@ def uploadText(hash_, text, explode, explode_input):
 
     if hash_ in createdHashes:
         fields['records'][0]['id'] = createdIds[createdHashes.index(hash_)]
-        x = requests.patch(BASE_URL, json=fields, headers=headers)
+        x = requests.patch(AIRTABLE_BASE_URL, json=fields, headers=headers)
     else:
-        x = requests.post(BASE_URL, json=fields, headers=headers)
+        x = requests.post(AIRTABLE_BASE_URL, json=fields, headers=headers)
 
     print('content uploaded with status code ' + str(x.status_code))
     print()
     return x.status_code, securePass, json.loads(x.content.decode("utf-8"))['records'][0]['id']
 
 def getDataByRecordHash(hash_):
-    listUrl = BASE_URL + "?maxRecords=3&view=Grid%20view&maxRecords=100"
+    listUrl = AIRTABLE_BASE_URL + "?maxRecords=3&view=Grid%20view&maxRecords=100"
     headers = {
         "Authorization" : "Bearer " + AIRTABLE_KEY,
     }
